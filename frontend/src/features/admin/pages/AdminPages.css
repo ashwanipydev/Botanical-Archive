@@ -1,0 +1,281 @@
+/* ─── Admin Pages Shared CSS ─── */
+.admin-page {
+  max-width: 1200px;
+}
+
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-lg);
+}
+
+.admin-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+/* Slot Cards Grid */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.slot-manage-card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  transition: box-shadow var(--transition-base);
+}
+
+.slot-manage-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.slot-manage-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.slot-manage-card__time {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.slot-manage-card__actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--outline-variant);
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--on-surface-variant);
+}
+
+.filter-chip:hover {
+  background: var(--surface-container-low);
+}
+
+.filter-chip--active {
+  background: var(--primary-container);
+  color: var(--on-primary);
+  border-color: var(--primary-container);
+}
+
+/* Pricing cards */
+.pricing-section {
+  margin-bottom: var(--space-xl);
+}
+
+.pricing-section h3 {
+  margin-bottom: var(--space-md);
+}
+
+.pricing-card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.pricing-input {
+  width: 120px;
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-container-high);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: var(--primary-container);
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* User row */
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--primary-container);
+  flex-shrink: 0;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-lg);
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  transition: all var(--transition-fast);
+}
+
+.pagination button:hover {
+  background: var(--surface-container-low);
+}
+
+.pagination button.active {
+  background: var(--primary-container);
+  color: white;
+  border-color: var(--primary-container);
+}
+
+/* Status Badges Refined */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.status-badge--active {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #10b98120;
+}
+
+.status-badge--inactive {
+  background: #fdf2f2;
+  color: #dc2626;
+  border-color: #ef444420;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-indicator--active { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+.status-indicator--inactive { background: #ef4444; }
+
+/* Avatar Status Ring */
+.avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-container-lowest);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .admin-grid-2 { grid-template-columns: 1fr; }
+  .admin-grid-3 { grid-template-columns: 1fr; }
+  .slot-grid { grid-template-columns: 1fr; }
+  .pricing-card { flex-direction: column; text-align: center; }
+  
+  /* Table Stack for Mobile */
+  .responsive-table tr {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-bottom: 1px solid var(--outline-variant);
+  }
+  
+  .responsive-table td {
+    padding: 0.5rem 0;
+    border: none;
+  }
+}

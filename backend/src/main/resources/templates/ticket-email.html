@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Zoo Ticket</title>
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; color: #1c2120; background-color: #f7f8f7; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.05); }
+        .header { background-color: #064e3b; padding: 40px; text-align: center; color: #ecfdf5; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+        .content { padding: 40px; }
+        .ticket-box { border: 2px dashed #e5e7eb; border-radius: 16px; padding: 24px; margin-bottom: 32px; background-color: #fbfcfb; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
+        .detail-label { color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
+        .detail-value { font-weight: 700; color: #111827; }
+        .total-row { border-top: 2px solid #f3f4f6; pt: 20px; mt: 20px; }
+        .total-label { font-size: 18px; font-weight: 800; }
+        .total-price { font-size: 24px; font-weight: 900; color: #065f46; }
+        .footer { padding: 40px; text-align: center; font-size: 12px; color: #9ca3af; background-color: #f9fafb; border-top: 1px solid #f3f4f6; }
+        .btn { display: inline-block; padding: 14px 28px; background-color: #065f46; color: #ffffff !important; text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 24px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CIVIC NATURALIST ZOO</h1>
+            <p style="margin-top: 8px; opacity: 0.8; font-size: 14px;">Your journey into the natural world awaits.</p>
+        </div>
+        <div class="content">
+            <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; tracking-tighter: -0.02em;">Booking Confirmed!</h2>
+            <p style="color: #4b5563; font-size: 15px; margin-bottom: 32px;">Hi <span th:text="${fullName}">Guest</span>, thank you for booking with the Civic Naturalist Zoo. Below are your electronic ticket details.</p>
+            
+            <div class="ticket-box">
+                <div class="detail-row">
+                    <span class="detail-label">Booking ID</span>
+                    <span class="detail-value" th:text="${bookingId}">#12345</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Visit Date</span>
+                    <span class="detail-value" th:text="${visitDate}">April 17, 2026</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Time Slot</span>
+                    <span class="detail-value" th:text="${timeSlot}">09:00 AM - 11:00 AM</span>
+                </div>
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f3f4f6;">
+                    <div class="detail-row">
+                        <span class="detail-label">Adult Tickets</span>
+                        <span class="detail-value" th:text="${adultCount}">2</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Child Tickets</span>
+                        <span class="detail-value" th:text="${childCount}">1</span>
+                    </div>
+                    <div th:if="${safari}" class="detail-row">
+                        <span class="detail-label">Safari Access</span>
+                        <span class="detail-value">YES</span>
+                    </div>
+                    <div th:if="${camera}" class="detail-row">
+                        <span class="detail-label">Camera Permit</span>
+                        <span class="detail-value">YES</span>
+                    </div>
+                </div>
+                
+                <div class="detail-row total-row" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
+                    <span class="total-label">Total Amount</span>
+                    <span class="total-price">₹<span th:text="${totalAmount}">2400.00</span></span>
+                </div>
+            </div>
+
+            <p style="font-size: 14px; color: #6b7280; text-align: center;">Please present this email or the attached PDF at the gate.</p>
+            
+            <div style="text-align: center;">
+                <a href="#" class="btn">Download E-Ticket</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Civic Naturalist Botanical Gardens & Zoo.</p>
+            <p>123 Sanctuary Drive, Nature Valley, Earth.</p>
+        </div>
+    </div>
+</body>
+</html>

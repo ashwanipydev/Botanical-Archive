@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zoo Archive Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;600;700;800&amp;family=Inter:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e2e3de",
+                        "on-surface-variant": "#43493d",
+                        "primary-fixed-dim": "#a8d38a",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#98c27b",
+                        "surface-dim": "#dadad6",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#3f7024",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#ee9ec8",
+                        "primary-fixed": "#c4efa3",
+                        "surface-container-low": "#f4f4ef",
+                        "secondary-fixed": "#b9f395",
+                        "on-surface": "#1a1c19",
+                        "on-tertiary-fixed-variant": "#6f3155",
+                        "tertiary-fixed-dim": "#ffafd8",
+                        "on-primary-fixed-variant": "#2c4f15",
+                        "inverse-primary": "#a8d38a",
+                        "surface-bright": "#fafaf5",
+                        "inverse-surface": "#2f312e",
+                        "outline-variant": "#c3c9b9",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f1f1ec",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#703256",
+                        "surface": "#fafaf5",
+                        "secondary": "#396a1e",
+                        "tertiary": "#551b3f",
+                        "surface-variant": "#e2e3de",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2d5016",
+                        "primary": "#173901",
+                        "on-secondary-fixed-variant": "#225105",
+                        "surface-container-high": "#e8e8e4",
+                        "secondary-fixed-dim": "#9ed67c",
+                        "background": "#fafaf5",
+                        "surface-container": "#eeeee9",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#b9f395",
+                        "on-primary-fixed": "#0a2100",
+                        "tertiary-fixed": "#ffd8e9",
+                        "surface-tint": "#43682b",
+                        "on-secondary-fixed": "#082100",
+                        "on-background": "#1a1c19",
+                        "outline": "#73796c",
+                        "on-tertiary-fixed": "#3a0428"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-surface min-h-screen pb-28">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#FAFAF5]/80 backdrop-blur-xl z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Head Keeper Profile" class="w-full h-full object-cover" data-alt="Professional portrait of a mature man in neutral khaki field attire with a soft outdoor background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkrR_trrabKp1TRV_h7sByPXcE-J3nfoHqdSSnEjHziTgPTnO3axf0fLi2aGjZSI69XrRNyqNxO1Gqi4yTMzQe8LJQbBieH8dfUD-jisymqdqadbXiwfGPiUcxsGPYsg7XM7oM3OOM0EhGlIZ_GukpKZ_CyQrXv34zKFYoxQWhIAvDVvUKZBP98Ayn0CUTV9xZ-MIPJYKsDRlHfSw5PgafzWapRtcIC0JwXx_C9qRbXb_O9HyYoDQwe9bkF_IQlJvk0vL5hLqR1U39"/>
+</div>
+<h1 class="font-headline text-xl font-extrabold text-[#173901] tracking-tight">Zoo Archive</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#F4F4EF] transition-colors text-[#2D5016]">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="pt-24 px-6 space-y-8">
+<!-- Hero Display Section -->
+<section class="space-y-2">
+<p class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant font-medium">Daily Briefing</p>
+<div class="flex items-baseline gap-2">
+<h2 class="font-display text-4xl font-extrabold text-primary tracking-tighter">Overview</h2>
+<div class="h-2 w-2 rounded-full bg-secondary-container"></div>
+</div>
+</section>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Metric 1: Total Revenue (Large) -->
+<div class="col-span-2 p-6 rounded-3xl bg-surface-container-lowest flex flex-col justify-between min-h-[160px] relative overflow-hidden group">
+<div class="relative z-10">
+<p class="font-label text-sm text-on-surface-variant mb-1">Total Revenue</p>
+<h3 class="font-headline text-3xl font-extrabold text-primary tracking-tight">₹2,34,500</h3>
+</div>
+<div class="relative z-10 flex items-center gap-2 mt-4">
+<span class="flex items-center text-xs font-bold text-secondary px-2 py-1 bg-secondary-fixed rounded-full">
+<span class="material-symbols-outlined text-sm mr-1" data-icon="trending_up">trending_up</span>
+                        5.4%
+                    </span>
+<span class="text-xs text-on-surface-variant font-medium">vs yesterday</span>
+</div>
+<!-- Artistic texture background -->
+<div class="absolute -right-4 -bottom-4 w-32 h-32 bg-primary-fixed/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-500"></div>
+</div>
+<!-- Metric 2: Today's Bookings -->
+<div class="p-5 rounded-3xl bg-surface-container-low flex flex-col justify-between aspect-square">
+<div class="w-10 h-10 rounded-2xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+</div>
+<div>
+<p class="font-label text-xs text-on-surface-variant mb-1">Bookings</p>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-2xl font-bold text-on-surface">156</span>
+<span class="text-[10px] text-secondary font-bold">+12%</span>
+</div>
+</div>
+</div>
+<!-- Metric 3: Occupancy -->
+<div class="p-5 rounded-3xl bg-surface-container-low flex flex-col justify-between aspect-square">
+<div class="w-10 h-10 rounded-2xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm">
+<span class="material-symbols-outlined" data-icon="data_usage">data_usage</span>
+</div>
+<div>
+<p class="font-label text-xs text-on-surface-variant mb-1">Occupancy</p>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-2xl font-bold text-on-surface">78%</span>
+<span class="text-[10px] text-error font-bold">-2.1%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Summary: Habitat Status -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<h3 class="font-headline text-xl font-bold text-primary tracking-tight">Active Habitats</h3>
+<span class="font-label text-xs text-on-surface-variant font-medium">12 Slots Stable</span>
+</div>
+<div class="p-1 bg-surface-container-low rounded-[2rem] flex gap-1 h-12 overflow-hidden">
+<div class="h-full bg-primary-container rounded-l-[1.5rem] flex-grow transition-all duration-700" style="width: 45%;"></div>
+<div class="h-full bg-secondary-container flex-grow" style="width: 30%;"></div>
+<div class="h-full bg-surface-container-highest rounded-r-[1.5rem] flex-grow" style="width: 25%;"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label font-bold uppercase tracking-widest text-on-surface-variant px-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span>Mammals</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<span>Aviary</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<span>Reptiles</span>
+</div>
+</div>
+</section>
+<!-- Recent Bookings List -->
+<section class="space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="font-headline text-xl font-bold text-primary tracking-tight">Recent Activity</h3>
+<button class="text-xs font-label font-bold text-secondary uppercase tracking-wider">See All</button>
+</div>
+<div class="space-y-3">
+<!-- Booking Card 1 -->
+<div class="group p-4 bg-surface-container-lowest rounded-2xl flex items-center justify-between transition-all hover:bg-surface-container-low active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl overflow-hidden">
+<img alt="Lion habitat thumbnail" class="w-full h-full object-cover" data-alt="Close-up of a majestic male lion face with soft lighting in an enclosure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiIf3gUR9JRL6pXpJ5toKmViQmaOp_kq99D_Vs40HqJl8lt6ETCFWVwR4Te_s7q--7_SnLy8isT50Sr12Mia7eLmfQ-COnsy2LsrijLRk91KrMS-ewp2I_W_W2o5X9Otmi2IJmqOgmGHF2QkvJGqVEL2U74bFq0Pop0QYonDzrX1QUkCdPL-2dhTN-jHpoO4PPZkv_Kz_NMlVFNsMBbhaDlEPkq04WyFMX62qOTM6KQ-7R-u8Ow3hWnVjZq9T6qKzWzOIlT-Ts_kDN"/>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface text-sm">Primal Safari</p>
+<p class="font-label text-xs text-on-surface-variant">Slot #42 • 10:30 AM</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-extrabold text-on-surface text-sm">₹1,200</p>
+<span class="text-[10px] font-bold text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded-full">CONFIRMED</span>
+</div>
+</div>
+<!-- Booking Card 2 -->
+<div class="group p-4 bg-surface-container-lowest rounded-2xl flex items-center justify-between transition-all hover:bg-surface-container-low active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl overflow-hidden">
+<img alt="Botanical garden thumbnail" class="w-full h-full object-cover" data-alt="Lush green botanical conservatory interior with giant ferns and tropical plants under glass dome" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAME_gznF23xdwJBvAXOFBad8J0KoeIZ9ojqqaPC8mJWMSs5f-O1zjSv8hHWHwoCQk4zoJUvRL2OS_PzIZ0pHQ895-CMX28TSK-MkZRdDL1T4tYDEnmPxDv111E_viu0ZhRvDQvJQ0JMGHBBvfp8Q4QiOpuMvcnUCaOqKzLUygmIGt-qwRo4qkGbHi-4MZ1wFpjlek7MRLa4NBsnQZi-yIzAQ_cP1VnhyBZlQTR7RxS-8NL9l4PIuNsfUYSTdEQe4ZTKgNq0-mH62KN"/>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface text-sm">Greenhouse Tour</p>
+<p class="font-label text-xs text-on-surface-variant">Slot #12 • 11:15 AM</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-extrabold text-on-surface text-sm">₹850</p>
+<span class="text-[10px] font-bold text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded-full">CONFIRMED</span>
+</div>
+</div>
+<!-- Booking Card 3 -->
+<div class="group p-4 bg-surface-container-lowest rounded-2xl flex items-center justify-between transition-all hover:bg-surface-container-low active:scale-[0.98]">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl overflow-hidden bg-surface-container-low flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="image_not_supported">image_not_supported</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface text-sm">Keeper Q&amp;A</p>
+<p class="font-label text-xs text-on-surface-variant">Slot #08 • 01:00 PM</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-extrabold text-on-surface text-sm">₹2,500</p>
+<span class="text-[10px] font-bold text-on-tertiary-container bg-tertiary-fixed-dim px-2 py-0.5 rounded-full">PENDING</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFFFFF]/90 backdrop-blur-2xl shadow-[0_-12px_32px_-4px_rgba(26,28,25,0.06)] rounded-t-[2rem]">
+<!-- Overview (Active) -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#2D5016] to-[#173901] text-white rounded-[1.5rem] px-5 py-2 active:scale-90 transition-transform duration-300" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-headline text-[10px] font-medium tracking-wide uppercase mt-1">Overview</span>
+</a>
+<!-- Bookings -->
+<a class="flex flex-col items-center justify-center text-[#43493D] px-5 py-2 hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="event_seat">event_seat</span>
+<span class="font-headline text-[10px] font-medium tracking-wide uppercase mt-1">Bookings</span>
+</a>
+<!-- Revenue -->
+<a class="flex flex-col items-center justify-center text-[#43493D] px-5 py-2 hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="payments">payments</span>
+<span class="font-headline text-[10px] font-medium tracking-wide uppercase mt-1">Revenue</span>
+</a>
+<!-- Habitats -->
+<a class="flex flex-col items-center justify-center text-[#43493D] px-5 py-2 hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology_alt">psychology_alt</span>
+<span class="font-headline text-[10px] font-medium tracking-wide uppercase mt-1">Habitats</span>
+</a>
+</nav>
+</body></html>
