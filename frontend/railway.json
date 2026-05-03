@@ -4,9 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "java -jar target/*.jar",
-    "healthcheckPath": "/actuator/health",
-    "healthcheckTimeout": 120,
+    "startCommand": "npm start",
     "restartPolicyType": "ON_FAILURE"
   }
 }
