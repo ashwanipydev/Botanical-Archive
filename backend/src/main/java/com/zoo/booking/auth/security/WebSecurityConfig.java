@@ -75,7 +75,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/bookings/initiate").permitAll()
                         .requestMatchers("/api/payments/webhook/**").permitAll() // Webhooks are public but verified internally
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/api-docs/**", "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
