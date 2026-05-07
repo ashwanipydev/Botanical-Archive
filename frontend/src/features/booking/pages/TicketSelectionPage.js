@@ -192,35 +192,43 @@ const TicketSelectionPage = () => {
                                 {availableAddons.map(addon => (
                                     <div 
                                         key={addon.id} 
-                                        className={`bg-surface-container-lowest overflow-hidden group rounded-2xl shadow-sm border transition-all cursor-pointer ${selectedAddons[addon.id] ? 'border-primary ring-2 ring-primary/20' : 'border-outline-variant/20 hover:border-primary/50'}`}
+                                        className={`relative group bg-surface-container-lowest overflow-hidden rounded-[2rem] border transition-all duration-500 cursor-pointer ${selectedAddons[addon.id] ? 'border-primary shadow-xl shadow-primary/5 ring-1 ring-primary' : 'border-outline-variant/10 hover:border-primary/40 hover:shadow-lg'}`}
                                         onClick={() => toggleAddon(addon.id)}
                                     >
-                                        <div className="h-36 w-full relative overflow-hidden">
+                                        <div className="h-44 w-full relative overflow-hidden">
                                             {addon.imageUrl ? (
-                                                <img alt={addon.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src={addon.imageUrl} />
+                                                <img alt={addon.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" src={addon.imageUrl} />
                                             ) : (
-                                                <div className="w-full h-full bg-surface-container-high flex items-center justify-center text-on-surface-variant/30">
-                                                    <span className="material-symbols-outlined text-4xl">image</span>
+                                                <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant/10">
+                                                    <span className="material-symbols-outlined text-5xl">nature</span>
                                                 </div>
                                             )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                                            <div className="absolute bottom-4 left-4 text-white">
-                                                <div className="font-bold text-lg leading-tight">{addon.name}</div>
-                                                <div className="text-[10px] uppercase tracking-widest font-black opacity-80">{addon.type === 'PER_PERSON' ? 'Per Person' : 'Per Booking'}</div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#173901]/80 via-[#173901]/20 to-transparent"></div>
+                                            
+                                            {/* Selection Indicator Overlay */}
+                                            {selectedAddons[addon.id] && (
+                                                <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg animate-in zoom-in duration-300">
+                                                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
+                                                </div>
+                                            )}
+
+                                            <div className="absolute bottom-6 left-6 right-6">
+                                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#B9F395] mb-2 block opacity-90">{addon.type === 'PER_PERSON' ? 'Per Individual' : 'Per Booking'}</span>
+                                                <h4 className="text-xl font-black text-white tracking-tight">{addon.name}</h4>
                                             </div>
                                         </div>
-                                        <div className="p-6 space-y-4">
-                                            <p className="text-sm text-on-surface-variant line-clamp-2 min-h-[40px]">{addon.description || 'Additional service to enhance your experience.'}</p>
-                                            <div className="flex justify-between items-center">
-                                                <span className="font-bold text-primary">₹{addon.price}.00</span>
-                                                {selectedAddons[addon.id] ? (
-                                                    <button className="px-5 py-2 bg-primary text-on-primary text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-2 shadow-lg shadow-primary/20">
-                                                        <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
-                                                        Selected
-                                                    </button>
-                                                ) : (
-                                                    <button className="px-5 py-2 bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-widest rounded-full hover:bg-primary hover:text-on-primary transition-all">Add</button>
-                                                )}
+                                        <div className="p-8 space-y-6">
+                                            <p className="text-sm text-on-surface-variant/80 leading-relaxed line-clamp-2 min-h-[3rem] font-medium italic">
+                                                "{addon.description || 'Enhance your botanical journey with our curated habitat modules.'}"
+                                            </p>
+                                            <div className="flex justify-between items-center pt-4 border-t border-outline-variant/5">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] uppercase tracking-widest text-on-surface-variant font-black">Price</span>
+                                                    <span className="text-xl font-black text-primary">₹{addon.price}</span>
+                                                </div>
+                                                <button className={`px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${selectedAddons[addon.id] ? 'bg-primary text-on-primary shadow-lg shadow-primary/20' : 'bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary'}`}>
+                                                    {selectedAddons[addon.id] ? 'Selected' : 'Add Module'}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

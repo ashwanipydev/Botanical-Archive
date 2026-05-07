@@ -237,6 +237,15 @@ const PricingManagementStitch = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {addons.map((addon, index) => (
               <div key={addon.id || `new-${index}`} className="rounded-[1.75rem] bg-surface-container-low p-5">
+                <div className="mb-6 h-40 overflow-hidden rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
+                  {addon.imageUrl ? (
+                    <img src={addon.imageUrl} alt={addon.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-on-surface-variant/20">
+                      <span className="material-symbols-outlined text-4xl">photo_camera</span>
+                    </div>
+                  )}
+                </div>
                 <div className="mb-4 flex items-start justify-between gap-4">
                   <div>
                     <input className="w-full bg-transparent text-lg font-black tracking-tight text-primary outline-none" value={addon.name} onChange={(event) => handleAddonChange(addon.id || `new-${index}`, 'name', event.target.value)} />
@@ -260,6 +269,10 @@ const PricingManagementStitch = () => {
                   <div className="input-group">
                     <label className="label">Price</label>
                     <input className="input-field bg-surface-container-lowest" type="number" value={addon.price || 0} onChange={(event) => handleAddonChange(addon.id || `new-${index}`, 'price', parseFloat(event.target.value) || 0)} />
+                  </div>
+                  <div className="input-group">
+                    <label className="label">Image URL</label>
+                    <input className="input-field bg-surface-container-lowest" type="text" placeholder="https://images.unsplash.com/..." value={addon.imageUrl || ''} onChange={(event) => handleAddonChange(addon.id || `new-${index}`, 'imageUrl', event.target.value)} />
                   </div>
                   <div className="input-group">
                     <label className="label">Description</label>

@@ -4,6 +4,7 @@ import api from '../../../core/services/api';
 
 const LandingPage = () => {
   const [adultPrice, setAdultPrice] = React.useState(800);
+  const [addons, setAddons] = React.useState([]);
 
   React.useEffect(() => {
     api.get('/public/pricing/tickets')
@@ -11,6 +12,10 @@ const LandingPage = () => {
         if (res.data.ADULT) setAdultPrice(res.data.ADULT);
       })
       .catch(err => console.error('Error fetching landing prices:', err));
+
+    api.get('/public/pricing/addons')
+      .then(res => setAddons(res.data))
+      .catch(err => console.error('Error fetching landing addons:', err));
   }, []);
 
   return (
@@ -77,25 +82,61 @@ const LandingPage = () => {
             <div className="flex justify-between items-end mb-16">
               <div>
                 <span className="text-[#43493D] font-label text-[10px] uppercase tracking-[0.3em] font-black mb-3 block">Exploration Paths</span>
-                <h3 className="text-4xl md:text-6xl font-black text-[#173901] tracking-tighter leading-none">Curated Modules</h3>
+                <h3 className="text-4xl md:text-6xl font-black text-[#173901] tracking-tighter leading-none">Premium Experiences</h3>
               </div>
-              <button className="text-[11px] font-black text-[#396A1E] tracking-widest uppercase border-b-2 border-[#396A1E]/20 pb-2 hover:border-[#396A1E] transition-all">View Scientific Index</button>
+              <Link to="/book/date" className="text-[11px] font-black text-[#396A1E] tracking-widest uppercase border-b-2 border-[#396A1E]/20 pb-2 hover:border-[#396A1E] transition-all">Start Your Journey</Link>
             </div>
 
-            <div className="flex overflow-x-auto gap-8 no-scrollbar snap-x pb-8">
-              {[
-                { title: 'Habitat Tours', desc: 'Guided botanical walks through our micro-climate biomes.', icon: 'park', color: 'bg-[#B9F395]/40 text-[#396A1E]' },
-                { title: 'Private Safari', desc: 'Exclusive off-road access to apex predator enclosures.', icon: 'travel_explore', color: 'bg-[#C4EFA3]/40 text-[#173901]' },
-                { title: 'Eco-Education', desc: 'Scientific workshops on biodiversity and preservation.', icon: 'menu_book', color: 'bg-[#FFD8E9]/40 text-[#551B3F]' }
-              ].map((item, idx) => (
-                <div key={idx} className="flex-none w-80 snap-start bg-white p-10 rounded-[3rem] border border-outline-variant/10 shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 group">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110 duration-500 ${item.color}`}>
-                    <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {addons.filter(a => a.isActive).map((addon, idx) => (
+                <div key={addon.id} className="group relative bg-white rounded-[3rem] overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-2xl transition-all duration-700">
+                  <div className="h-64 overflow-hidden relative">
+                    {addon.imageUrl ? (
+                      <img src={addon.imageUrl} alt={addon.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                    ) : (
+                      <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant/20">
+                        <span className="material-symbols-outlined text-6xl">photo_camera</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#173901]/80 via-transparent to-transparent opacity-60"></div>
+                    <div className="absolute bottom-8 left-8 right-8">
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#B9F395] mb-2 block">{addon.type === 'PER_PERSON' ? 'Per Person' : 'Per Booking'}</span>
+                          <h4 className="text-2xl font-black text-white tracking-tight">{addon.name}</h4>
+                        </div>
+                        <div className="text-xl font-black text-[#B9F395]">₹{addon.price}</div>
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-2xl font-black text-[#173901] tracking-tight mb-4">{item.title}</h4>
-                  <p className="text-sm md:text-base text-[#43493D] leading-[1.6] font-medium opacity-80">{item.desc}</p>
+                  <div className="p-10">
+                    <p className="text-sm md:text-base text-[#43493D] leading-[1.6] font-medium opacity-80 mb-8 min-h-[4.8rem] line-clamp-3">
+                      {addon.description || "Experience the habitat like never before with our premium guided modules."}
+                    </p>
+                    <Link to="/book/date" className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-[#173901] hover:gap-4 transition-all">
+                      Add to Booking
+                      <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
+                    </Link>
+                  </div>
                 </div>
               ))}
+              
+              {/* Fallback if no addons in DB */}
+              {addons.filter(a => a.isActive).length === 0 && (
+                [
+                  { title: 'Habitat Tours', desc: 'Guided botanical walks through our micro-climate biomes.', icon: 'park', color: 'bg-[#B9F395]/40 text-[#396A1E]' },
+                  { title: 'Private Safari', desc: 'Exclusive off-road access to apex predator enclosures.', icon: 'travel_explore', color: 'bg-[#C4EFA3]/40 text-[#173901]' },
+                  { title: 'Eco-Education', desc: 'Scientific workshops on biodiversity and preservation.', icon: 'menu_book', color: 'bg-[#FFD8E9]/40 text-[#551B3F]' }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex-none bg-white p-10 rounded-[3rem] border border-outline-variant/10 shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 group">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110 duration-500 ${item.color}`}>
+                      <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                    </div>
+                    <h4 className="text-2xl font-black text-[#173901] tracking-tight mb-4">{item.title}</h4>
+                    <p className="text-sm md:text-base text-[#43493D] leading-[1.6] font-medium opacity-80">{item.desc}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </section>
