@@ -6,7 +6,26 @@ import './BookingFlow.css';
 const TicketSelectionPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { date, slot } = location.state || {};
+    
+    // Attempt to restore state from location or sessionStorage
+    const [bookingData, setBookingData] = useState(() => {
+        const state = location.state;
+        if (state && state.date && state.slot) {
+            sessionStorage.setItem('booking_flow_state', JSON.stringify(state));
+            return state;
+        }
+        const saved = sessionStorage.getItem('booking_flow_state');
+        return saved ? JSON.parse(saved) : {};
+    });
+
+    const { date, slot } = bookingData;
+    
+    useEffect(() => {
+        if (!date || !slot) {
+            console.warn('[TicketSelectionPage] Missing booking state. Redirecting to start.');
+            navigate('/book/date');
+        }
+    }, [date, slot, navigate]);
 
     const [adults, setAdults] = useState(2);
     const [children, setChildren] = useState(1);
@@ -62,19 +81,20 @@ const TicketSelectionPage = () => {
     };
 
     const handleContinue = () => {
-        navigate('/book/details', {
-            state: { 
-                date, 
-                slot, 
-                adults, 
-                children, 
-                selectedAddons, // Map of ID -> boolean
-                availableAddons, // Full list for details
-                total,
-                adultPrice: prices.ADULT,
-                childPrice: prices.CHILD
-            }
-        });
+        const nextState = { 
+            date, 
+            slot, 
+            adults, 
+            children, 
+            selectedAddons, // Map of ID -> boolean
+            availableAddons, // Full list for details
+            total,
+            adultPrice: prices.ADULT,
+            childPrice: prices.CHILD
+        };
+        // Persist for next step
+        sessionStorage.setItem('booking_flow_state', JSON.stringify(nextState));
+        navigate('/book/details', { state: nextState });
     };
 
     const displayDate = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Select a date';

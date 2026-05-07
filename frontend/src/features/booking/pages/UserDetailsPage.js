@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import './BookingFlow.css';
 
 const UserDetailsPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const bookingState = location.state || {};
+    
+    // Attempt to restore state from location or sessionStorage
+    const [bookingState, setBookingState] = useState(() => {
+        const state = location.state;
+        if (state && state.date && state.slot) {
+            sessionStorage.setItem('booking_flow_state', JSON.stringify(state));
+            return state;
+        }
+        const saved = sessionStorage.getItem('booking_flow_state');
+        return saved ? JSON.parse(saved) : {};
+    });
+
+    useEffect(() => {
+        if (!bookingState.date || !bookingState.slot) {
+            console.warn('[UserDetailsPage] Missing booking state. Redirecting to start.');
+            navigate('/book/date');
+        }
+    }, [bookingState, navigate]);
 
     const [form, setForm] = useState({ fullName: '', mobileNumber: '', email: '' });
 
@@ -15,7 +32,9 @@ const UserDetailsPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/book/payment', { state: { ...bookingState, userDetails: form } });
+        const nextState = { ...bookingState, userDetails: form };
+        sessionStorage.setItem('booking_flow_state', JSON.stringify(nextState));
+        navigate('/book/payment', { state: nextState });
     };
 
     const formatAmPm = (timeStr) => {

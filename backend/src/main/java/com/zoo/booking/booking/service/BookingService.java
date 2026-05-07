@@ -123,7 +123,7 @@ public class BookingService {
         booking.setAdultTickets(request.getAdultTickets());
         booking.setChildTickets(request.getChildTickets());
         booking.setTotalAmount(totalAmount);
-        booking.setStatus("PENDING");
+        booking.setStatus("CONFIRMED");
         booking.setExpiryTime(LocalDateTime.now().plusMinutes(BOOKING_EXPIRY_MINUTES));
         
         // Store guest details if it's a guest booking
@@ -185,18 +185,31 @@ public class BookingService {
         // Create audit log
         createAuditLog(booking, request, priceBreakdown, "CREATED", null);
 
-        // Initiate payment (real Razorpay order)
+        // Generate ticket
+        try {
+            String pdfUrl = generateTicketPdf(booking);
+            booking.setPdfUrl(pdfUrl);
+            bookingRepository.updatePdfUrl(booking.getId(), pdfUrl);
+        } catch (Exception e) {
+            log.error("Error generating ticket for booking: {}", booking.getId(), e);
+        }
+
+        // Send email confirmation (Async)
+        try {
+            emailService.sendBookingConfirmation(booking, booking.getPdfUrl());
+        } catch (Exception e) {
+            log.error("Error sending email for booking: {}", booking.getId(), e);
+        }
+
+        // Initiate payment (Optional background process for auto-confirmation)
         try {
             String receipt = "receipt_" + booking.getId();
             String razorpayOrderId = razorpayService.createOrder(totalAmount, "INR", receipt);
             booking.setRazorpayOrderId(razorpayOrderId);
             booking = bookingRepository.save(booking);
-            log.info("Booking initiated successfully with real Razorpay order ID: {}", razorpayOrderId);
+            log.info("Booking auto-confirmed. Razorpay order ID created: {}", razorpayOrderId);
         } catch (Exception e) {
-            log.error("Error creating Razorpay order for booking: {}", booking.getId(), e);
-            // We still have the booking in PENDING status, but without an order ID.
-            // In a real scenario, we might want to fail the booking here or handle it.
-            throw new RuntimeException("Payment initiation failed: " + e.getMessage());
+            log.warn("Auto-confirmation: Razorpay order creation failed, but booking is confirmed: {}", e.getMessage());
         }
 
         return booking;
@@ -235,7 +248,7 @@ public class BookingService {
         
         // Send email confirmation
         try {
-            emailService.sendBookingConfirmation(booking);
+            emailService.sendBookingConfirmation(booking, booking.getPdfUrl());
         } catch (Exception e) {
             log.error("Error sending email for booking: {}", bookingId, e);
         }

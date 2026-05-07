@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.1.42:8081/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.6.7:8081/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -16,7 +16,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     // Detailed Request Logging
     console.group(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`);
     if (config.data) {

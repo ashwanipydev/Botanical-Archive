@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ticket" pageWidth="226" pageHeight="380" isIgnorePagination="true" columnWidth="206" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="e7b2f4f2-984e-4f33-8a3d-4c3d8e9c4b5a">
+	<parameter name="bookingId" class="java.lang.Long"/>
+	<parameter name="fullName" class="java.lang.String"/>
+	<parameter name="visitDate" class="java.lang.String"/>
+	<parameter name="timeSlot" class="java.lang.String"/>
+	<parameter name="adultCount" class="java.lang.Integer"/>
+	<parameter name="childCount" class="java.lang.Integer"/>
+	<parameter name="totalAmount" class="java.lang.String"/>
+	<parameter name="qrCode" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="206" height="20" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIVIC NATURALIST ZOO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="206" height="30" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1b"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nature Park Drive, Earth
+www.civic-zoo.com]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="60" width="206" height="1" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1c"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="260" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="70" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Booking ID:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="0" width="136" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bookingId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="70" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a1f"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visitor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="15" width="136" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fullName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="70" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a21"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="30" width="136" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a22"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{visitDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="45" width="70" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a23"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Time:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="45" width="136" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a24"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{timeSlot}]]></textFieldExpression>
+			</textField>
+			
+			<line>
+				<reportElement x="0" y="65" width="206" height="1" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a25">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			
+			<staticText>
+				<reportElement x="0" y="75" width="120" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a26"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Adult Tickets:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="120" y="75" width="86" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a27"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{adultCount}]]></textFieldExpression>
+			</textField>
+			
+			<staticText>
+				<reportElement x="0" y="90" width="120" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a28"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Child Tickets:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="120" y="90" width="86" height="15" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a29"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{childCount}]]></textFieldExpression>
+			</textField>
+			
+			<line>
+				<reportElement x="0" y="115" width="206" height="1" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a2a"/>
+			</line>
+			
+			<staticText>
+				<reportElement x="0" y="125" width="120" height="20" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a2b"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="120" y="125" width="86" height="20" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a2c"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["₹ " + $P{totalAmount}]]></textFieldExpression>
+			</textField>
+			
+			<image scaleImage="FillFrame" hAlign="Center">
+				<reportElement x="53" y="150" width="100" height="100" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a2d"/>
+				<imageExpression><![CDATA[$P{qrCode}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="206" height="30" uuid="d9b1a1a1-1a1a-1a1a-1a1a-1a1a1a1a1a2e"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Please show this QR at the entrance.
+Enjoy your visit!]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

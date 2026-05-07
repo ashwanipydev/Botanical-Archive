@@ -6,7 +6,25 @@ import './BookingFlow.css';
 const PaymentPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const bookingState = location.state || {};
+    
+    // Attempt to restore state from location or sessionStorage
+    const [bookingState, setBookingState] = useState(() => {
+        const state = location.state;
+        if (state && state.date && state.slot) {
+            sessionStorage.setItem('booking_flow_state', JSON.stringify(state));
+            return state;
+        }
+        const saved = sessionStorage.getItem('booking_flow_state');
+        return saved ? JSON.parse(saved) : {};
+    });
+
+    useEffect(() => {
+        if (!bookingState.date || !bookingState.slot) {
+            console.warn('[PaymentPage] Missing booking state. Redirecting to start.');
+            navigate('/book/date');
+        }
+    }, [bookingState, navigate]);
+
     const [paymentMethod, setPaymentMethod] = useState('card');
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);

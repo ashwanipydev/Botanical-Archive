@@ -4,7 +4,17 @@ import './BookingFlow.css';
 
 const ConfirmationPage = () => {
     const location = useLocation();
-    const state = location.state || {};
+    
+    // Attempt to restore state from location or sessionStorage
+    const state = (() => {
+        const s = location.state;
+        if (s && s.bookingId) {
+            sessionStorage.setItem('last_booking_confirmation', JSON.stringify(s));
+            return s;
+        }
+        const saved = sessionStorage.getItem('last_booking_confirmation');
+        return saved ? JSON.parse(saved) : {};
+    })();
 
     const formatAmPm = (timeStr) => {
         if (!timeStr) return '';
@@ -17,12 +27,15 @@ const ConfirmationPage = () => {
 
     const displayDate = state.date ? new Date(state.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
 
-    // Auto-scroll to top when page loads
+    // Auto-scroll to top and cleanup flow state
     useEffect(() => {
         window.scrollTo(0, 0);
         console.group('[ConfirmationPage] Booking Confirmed');
         console.log('Booking Details:', state);
         console.groupEnd();
+        
+        // Clear the booking flow state as the flow is complete
+        sessionStorage.removeItem('booking_flow_state');
     }, [state]);
 
     const handleDownloadPdf = () => {

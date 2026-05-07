@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './core/context/AuthContext';
 import Navbar from './shared/components/Navbar';
 import ProtectedRoute from './shared/components/ProtectedRoute';
@@ -28,11 +28,29 @@ import UserManagement from './features/admin/pages/UserManagementStitch';
 // Staff Pages
 import GatekeeperDashboard from './features/staff/pages/GatekeeperDashboard';
 
+// This component handles the automatic redirect to home on refresh/mount
+const RefreshRedirector = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // On every fresh load of the app (refresh), if we aren't at home, go home.
+    if (location.pathname !== '/') {
+      console.log('🔄 Tab refreshed or app reloaded. Redirecting to landing page...');
+      navigate('/', { replace: true });
+    }
+  }, []); // Run once on mount
+
+  return null;
+};
+
 function App() {
   return (
     <AuthProvider>
       <Router>
         <ScrollToTop />
+        <RefreshRedirector />
+        <div className="app-container min-h-screen bg-background">
         <Navbar />
         <Routes>
           {/* Public Routes */}
@@ -72,6 +90,7 @@ function App() {
           {/* Catch-all: redirect any unknown route to landing page */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </div>
       </Router>
     </AuthProvider>
   );

@@ -1,28 +1,29 @@
 package com.zoo.booking.pricing.service;
-import com.zoo.booking.slot.entity.Slot;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.zoo.booking.booking.entity.Booking;
+import net.sf.jasperreports.engine.*;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TicketService {
 
     private final String TICKET_DIR = "tickets/";
+    private JasperReport jasperReport;
 
     public TicketService() {
         try {
@@ -30,7 +31,12 @@ public class TicketService {
             if (!Files.exists(path)) {
                 Files.createDirectories(path);
             }
+            
+            // Pre-compile the report for performance
+            InputStream reportStream = new ClassPathResource("reports/ticket.jrxml").getInputStream();
+            this.jasperReport = JasperCompileManager.compileReport(reportStream);
         } catch (Exception e) {
+            System.err.println("❌ Failed to initialize TicketService or compile JasperReport: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -47,29 +53,31 @@ public class TicketService {
         String fileName = "Ticket_" + booking.getId() + ".pdf";
         String filePath = TICKET_DIR + fileName;
 
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
-        document.open();
+        try {
+            // Prepare parameters
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("bookingId", booking.getId());
+            parameters.put("fullName", booking.getUser().getFullName() != null ? booking.getUser().getFullName() : "Guest");
+            parameters.put("visitDate", booking.getSlot().getSlotDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+            parameters.put("timeSlot", booking.getSlot().getStartTime() + " - " + booking.getSlot().getEndTime());
+            parameters.put("adultCount", booking.getAdultTickets() != null ? booking.getAdultTickets() : 0);
+            parameters.put("childCount", booking.getChildTickets() != null ? booking.getChildTickets() : 0);
+            parameters.put("totalAmount", String.format("%.2f", booking.getTotalAmount()));
 
-        document.add(new Paragraph("Zoo Ticket Booking System"));
-        document.add(new Paragraph("Booking ID: " + booking.getId()));
-        document.add(new Paragraph("Name: " + booking.getUser().getFullName()));
-        document.add(new Paragraph("Date: " + booking.getSlot().getSlotDate().format(DateTimeFormatter.ISO_DATE)));
-        document.add(new Paragraph("Time Slot: " + booking.getSlot().getStartTime() + " to " + booking.getSlot().getEndTime()));
-        
-        document.add(new Paragraph("Adults: " + booking.getAdultTickets()));
-        document.add(new Paragraph("Children: " + booking.getChildTickets()));
-        document.add(new Paragraph("Safari Add-on: " + booking.getAddOnSafari()));
-        document.add(new Paragraph("Camera Add-on: " + booking.getAddOnCamera()));
-        
-        document.add(new Paragraph("Total Price: ₹ " + booking.getTotalAmount()));
+            // Generate QR Code as InputStream
+            byte[] qrCodeBytes = generateQRCodeImage("ZOO-BOOKING-" + booking.getId());
+            parameters.put("qrCode", new ByteArrayInputStream(qrCodeBytes));
 
-        byte[] qrCodeBytes = generateQRCodeImage("BOOKING_ID:" + booking.getId());
-        Image qrImage = Image.getInstance(qrCodeBytes);
-        qrImage.setAlignment(Image.ALIGN_CENTER);
-        document.add(qrImage);
+            // Fill the report
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 
-        document.close();
-        return fileName;
+            // Export to PDF
+            JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
+
+            return fileName;
+        } catch (Exception e) {
+            System.err.println("❌ Error generating JasperReport PDF: " + e.getMessage());
+            throw e;
+        }
     }
 }
