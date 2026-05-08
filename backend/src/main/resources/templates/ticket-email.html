@@ -53,13 +53,9 @@
                         <span class="detail-label">Child Tickets</span>
                         <span class="detail-value" th:text="${childCount}">1</span>
                     </div>
-                    <div th:if="${safari}" class="detail-row">
-                        <span class="detail-label">Safari Access</span>
-                        <span class="detail-value">YES</span>
-                    </div>
-                    <div th:if="${camera}" class="detail-row">
-                        <span class="detail-label">Camera Permit</span>
-                        <span class="detail-value">YES</span>
+                    <div th:each="addon : ${addons}" class="detail-row">
+                        <span class="detail-label" th:text="${addon.addOnName}">Add-on</span>
+                        <span class="detail-value" th:text="${'x' + addon.quantity}">x1</span>
                     </div>
                 </div>
                 

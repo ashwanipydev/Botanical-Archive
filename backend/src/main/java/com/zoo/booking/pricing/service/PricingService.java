@@ -31,15 +31,18 @@ public class PricingService {
     private final SlotPricingRepository slotPricingRepository;
     private final SystemSettingRepository systemSettingRepository;
     private final SlotRepository slotRepository;
+    private final AddOnRepository addOnRepository;
 
     public PricingService(TicketTypeRepository ticketTypeRepository,
                           SlotPricingRepository slotPricingRepository,
                           SystemSettingRepository systemSettingRepository,
-                          SlotRepository slotRepository) {
+                          SlotRepository slotRepository,
+                          AddOnRepository addOnRepository) {
         this.ticketTypeRepository = ticketTypeRepository;
         this.slotPricingRepository = slotPricingRepository;
         this.systemSettingRepository = systemSettingRepository;
         this.slotRepository = slotRepository;
+        this.addOnRepository = addOnRepository;
     }
 
     public Map<String, Double> resolvePricesForSlot(Long slotId) {
@@ -94,7 +97,18 @@ public class PricingService {
         response.setChildSubtotal(childSubtotal);
         
         double addOnTotal = 0.0;
-        // Conservation levy
+        if (request.getAddOns() != null) {
+            for (CreateBookingRequest.AddOnRequest addOnReq : request.getAddOns()) {
+                if (addOnReq.getAddOnId() != null && addOnReq.getQuantity() != null && addOnReq.getQuantity() > 0) {
+                    Optional<AddOn> addonOpt = addOnRepository.findById(addOnReq.getAddOnId());
+                    if (addonOpt.isPresent()) {
+                        addOnTotal += addonOpt.get().getPrice() * addOnReq.getQuantity();
+                    }
+                }
+            }
+        }
+
+        // Conservation levy / Convenience fee: 100.0
         response.setTotalAmount(adultSubtotal + childSubtotal + addOnTotal + 100.0); 
         return response;
     }

@@ -14,20 +14,29 @@ import java.net.URISyntaxException;
 public class DatabaseConfig {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
+    @org.springframework.beans.factory.annotation.Value("${spring.datasource.url}")
+    private String defaultUrl;
+    @org.springframework.beans.factory.annotation.Value("${spring.datasource.username}")
+    private String defaultUsername;
+    @org.springframework.beans.factory.annotation.Value("${spring.datasource.password}")
+    private String defaultPassword;
+
     @Bean
     @Primary
     public DataSource dataSource() throws URISyntaxException {
         String databaseUrl = System.getenv("DATABASE_URL");
         
         if (databaseUrl == null || databaseUrl.isEmpty()) {
-            logger.info("DATABASE_URL not found, using local development configuration");
+            logger.info("DATABASE_URL not found, using configuration from application.properties");
             return DataSourceBuilder.create()
-                    .url("jdbc:postgresql://localhost:5432/zoo_db")
-                    .username("zoo_admin")
-                    .password("zoo_password")
+                    .url(defaultUrl)
+                    .username(defaultUsername)
+                    .password(defaultPassword)
                     .driverClassName("org.postgresql.Driver")
                     .build();
         }
+
+
 
         logger.info("DATABASE_URL found, attempting to parse for JDBC connection");
         try {

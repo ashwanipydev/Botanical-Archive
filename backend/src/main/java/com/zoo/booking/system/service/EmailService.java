@@ -12,6 +12,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmailService {
@@ -24,6 +26,12 @@ public class EmailService {
 
     @Value("${spring.mail.username}")
     private String fromEmail;
+
+    @Autowired
+    private com.zoo.booking.booking.repository.BookingAddOnRepository bookingAddOnRepository;
+
+    @Autowired
+    private com.zoo.booking.pricing.service.PricingService pricingService;
 
     @Async
     public void sendBookingConfirmation(Booking booking, String pdfPath) {
@@ -38,6 +46,10 @@ public class EmailService {
                 return;
             }
 
+            // Fetch dynamic add-ons
+            List<com.zoo.booking.booking.repository.BookingAddOnRepository.BookingAddOnReservation> addons = 
+                bookingAddOnRepository.findByBookingId(booking.getId());
+
             Context context = new Context();
             context.setVariable("fullName", fullName != null ? fullName : "Guest");
             context.setVariable("bookingId", booking.getId());
@@ -47,9 +59,30 @@ public class EmailService {
                 booking.getSlot().getStartTime() + " - " + booking.getSlot().getEndTime() : "N/A");
             context.setVariable("adultCount", booking.getAdultTickets() != null ? booking.getAdultTickets() : 0);
             context.setVariable("childCount", booking.getChildTickets() != null ? booking.getChildTickets() : 0);
-            context.setVariable("safari", booking.getAddOnSafari() != null && booking.getAddOnSafari() > 0);
-            context.setVariable("camera", booking.getAddOnCamera() != null && booking.getAddOnCamera() > 0);
-            context.setVariable("totalAmount", booking.getTotalAmount() != null ? String.format("%.2f", booking.getTotalAmount()) : "0.00");
+            
+            // Pass the dynamic list of add-ons to the template
+            context.setVariable("addons", addons);
+            
+            // Recalculate total for consistency
+            double adultPrice = 800.0; // Fallback defaults
+            double childPrice = 500.0;
+            try {
+                Map<String, Double> prices = pricingService.resolvePricesForSlot(booking.getSlot().getId());
+                adultPrice = prices.getOrDefault("ADULT", 800.0);
+                childPrice = prices.getOrDefault("CHILD", 500.0);
+            } catch (Exception e) {
+                // Keep defaults
+            }
+            
+            double calculatedTotal = (adultPrice * (booking.getAdultTickets() != null ? booking.getAdultTickets() : 0)) + 
+                                     (childPrice * (booking.getChildTickets() != null ? booking.getChildTickets() : 0));
+            
+            for (com.zoo.booking.booking.repository.BookingAddOnRepository.BookingAddOnReservation addon : addons) {
+                calculatedTotal += addon.unitPrice().doubleValue() * (addon.quantity() != null ? addon.quantity() : 0);
+            }
+            calculatedTotal += 100.0; // Convenience fee
+
+            context.setVariable("totalAmount", String.format("%.2f", calculatedTotal));
 
             String process = templateEngine.process("ticket-email", context);
 
